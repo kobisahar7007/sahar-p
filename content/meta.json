@@ -22,17 +22,22 @@
         },
         "schema": {
           "@context": "https://schema.org",
-          "@type": "Organization",
+          "@type": "LocalBusiness",
           "name": "סהר פרסום ותקשורת",
           "url": "https://sahar-p.co.il/",
           "logo": "https://sahar-p.co.il/wp-content/uploads/2025/04/logo-1.png",
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+972-77-5439142",
-            "contactType": "customer service",
-            "areaServed": "IL",
-            "availableLanguage": "he"
-          }
+          "image": "https://sahar-p.co.il/wp-content/uploads/2025/04/tut-1024x404.png",
+          "telephone": "+972-77-5439142",
+          "email": "kobi@sahar-p.co.il",
+          "faxNumber": "+972-8-6439142",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "יפה ירקוני 49",
+            "addressLocality": "באר שבע",
+            "addressCountry": "IL"
+          },
+          "areaServed": "באר שבע והנגב",
+          "priceRange": "$$"
         }
       }
     },
