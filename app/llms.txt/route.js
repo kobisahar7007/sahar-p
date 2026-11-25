@@ -3,7 +3,7 @@ import path from 'path';
 
 export const dynamic = 'force-static';
 
-const BASE = 'https://sahar-p.co.il';
+const BASE = 'https://www.sahar-p.co.il';
 
 export async function GET() {
   const meta = JSON.parse(

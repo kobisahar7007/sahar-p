@@ -3,7 +3,7 @@ import path from 'path';
 
 export const dynamic = 'force-static';
 
-const BASE = 'https://sahar-p.co.il';
+const BASE = 'https://www.sahar-p.co.il';
 
 export default async function sitemap() {
   const meta = JSON.parse(
