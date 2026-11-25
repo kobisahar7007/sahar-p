@@ -789,20 +789,34 @@ var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/sahar-p.co.il\/wp-admin\/
 
 <script>
 (function(){
-  function loadBgVideos(){
-    document.querySelectorAll('[data-settings]').forEach(function(el){
-      try{
-        var s=JSON.parse(el.getAttribute('data-settings'));
-        var url=s.data_bg_video_link;
-        if(url){
-          var v=el.querySelector('video.elementor-background-video-hosted');
-          if(v){ if(v.getAttribute('src')!==url){ v.setAttribute('src',url); } v.play().catch(function(){}); }
-        }
-      }catch(e){}
-    });
+  function loadVideo(el){
+    try{
+      var s=JSON.parse(el.getAttribute('data-settings'));
+      var url=s.data_bg_video_link;
+      if(url){
+        var v=el.querySelector('video.elementor-background-video-hosted');
+        if(v && v.getAttribute('src')!==url){ v.setAttribute('src',url); v.play().catch(function(){}); }
+      }
+    }catch(e){}
   }
-  if(document.readyState==='complete'){ setTimeout(loadBgVideos,1800); }
-  else { window.addEventListener('load',function(){ setTimeout(loadBgVideos,1800); }); }
+  var targets=[];
+  document.querySelectorAll('[data-settings]').forEach(function(el){
+    try{ if(JSON.parse(el.getAttribute('data-settings')).data_bg_video_link) targets.push(el); }catch(e){}
+  });
+  function scheduleLoad(el){
+    // delay 2.5s after entering viewport, so the LCP image renders first
+    setTimeout(function(){ loadVideo(el); }, 2500);
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ scheduleLoad(en.target); io.unobserve(en.target); }
+      });
+    },{rootMargin:'400px'});
+    targets.forEach(function(el){ io.observe(el); });
+  } else {
+    window.addEventListener('load',function(){ setTimeout(function(){ targets.forEach(scheduleLoad); },3000); });
+  }
 })();
 </script>
 </body>
