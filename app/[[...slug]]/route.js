@@ -38,6 +38,21 @@ function seoBlock(seo = {}) {
   return out.join('\n');
 }
 
+function analyticsBlock() {
+  const parts = [
+    // Vercel Web Analytics (active once enabled in the Vercel dashboard)
+    '<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>',
+    '<script defer src="/_vercel/insights/script.js"></script>',
+  ];
+  // Google Analytics (GA4) — injected when NEXT_PUBLIC_GA_ID is set
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || process.env.GA_ID;
+  if (gaId && /^G-/.test(gaId)) {
+    parts.push(`<script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>`);
+    parts.push(`<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');</script>`);
+  }
+  return parts.join('\n');
+}
+
 function applySEO(html, seo = {}) {
   html = html.replace(/<meta name="generator"[^>]*>\s*/g, '');
   if (seo.title) {
@@ -52,8 +67,8 @@ function applySEO(html, seo = {}) {
       ? html.replace(/<link[^>]*rel=["']canonical["'][^>]*>/, c)
       : html.replace('</head>', c + '\n</head>');
   }
-  const block = seoBlock(seo);
-  if (block) html = html.replace('</head>', block + '\n</head>');
+  const block = seoBlock(seo) + '\n' + analyticsBlock();
+  if (block.trim()) html = html.replace('</head>', block + '\n</head>');
   return html;
 }
 
